@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Config = require('./config');
 const User = require('./models/user');
+const Recipe = require('./models/recipe');
 const app = express();
 const dev = app.get('env') !== 'production';
 const port = process.env.PORT || 5000;
@@ -25,21 +26,24 @@ if (dev) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/ping', (req, res) => {
-  const test = [5, 7, 9];
-  return res.json(test)
+app.get('/api/recipes', (req, res) => {
+  Recipe.find({}, (err, recipes) => {
+    if (err) throw err;
+    res.send(recipes);
+  });
 });
 
-app.get('/api/recipe', (req, res) => {
-  const recipe = { name: "this is data coming from the api" };
-  res.json(recipe);
+app.get('/api/recipes/:id', (req, res) => {
+  const { id } = req.params;
+  Recipe.findOne({ "_id": id }, (err, recipe) => {
+    if (err) throw err;
+    res.send(recipe);
+  });
 });
 
 app.get('/api/users', (req, res) => {
-  console.log('finding users')
   User.find({}, (err, users) => {
     if (err) throw err;
-    console.log(users);
     res.send(users);
   });
 });
