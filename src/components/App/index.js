@@ -6,7 +6,7 @@ const App  = ({ children }) => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="App-title"><Link to={'/'}>Recipe</Link></h1>
+        <h1 className="App-title"><Link to={'/'}>prepare.</Link></h1>
       </header>
       {children}
     </div>
