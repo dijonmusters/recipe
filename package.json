@@ -6,6 +6,7 @@
     "compression": "^1.7.1",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
+    "material-ui": "^0.20.0",
     "mongoose": "^4.13.9",
     "morgan": "^1.9.0",
     "react": "^16.2.0",
