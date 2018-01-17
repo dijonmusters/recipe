@@ -6,6 +6,7 @@ import './index.css';
 import App from './components/App/';
 import RecipeList from './components/RecipeList';
 import Recipe from './components/Recipe';
+import NewRecipe from './components/NewRecipe';
 import NotFound from './components/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -15,6 +16,7 @@ ReactDOM.render(
       <App>
         <Switch>
           <Route exact path="/" component={RecipeList} />
+          <Route exact path="/recipes/add" component={NewRecipe} />
           <Route path="/recipes/:id" component={Recipe} />
           <Route component={NotFound} />
         </Switch>
