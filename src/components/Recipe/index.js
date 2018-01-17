@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import converter from 'number-to-words';
 import _ from 'lodash';
 import './style.css';
 
@@ -17,8 +19,8 @@ class Recipe extends React.Component {
 
   fetchRecipe() {
     const { id } = this.props.match.params
-    fetch(`/api/recipes/${id}`)
-    .then(response => response.json())
+    axios.get(`/api/recipes/${id}`)
+    .then(response => response.data)
     .then(recipe => {
       this.setState({ recipe })
     })
@@ -33,9 +35,10 @@ class Recipe extends React.Component {
     );
   }
 
-  renderInstruction(instruction) {
+  renderInstruction(instruction, i) {
     return (
-      <p key={_.uniqueId()}>
+      <p key={ i }>
+        <span className='lighter-label'>step { converter.toWords(i + 1) }</span>
         { instruction }
       </p>
     );
@@ -52,7 +55,7 @@ class Recipe extends React.Component {
         </div>
         <div className="split">
           <h2>Instructions</h2>
-          { recipe.instructions.map(instruction => this.renderInstruction(instruction)) }
+          { recipe.instructions.map((instruction, i) => this.renderInstruction(instruction, i)) }
         </div>
       </div>
     );

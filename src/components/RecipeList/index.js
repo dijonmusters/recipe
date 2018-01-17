@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { RaisedButton } from 'material-ui';
 import _ from 'lodash';
 import './style.css';
 
@@ -17,8 +19,8 @@ class RecipeList extends React.Component {
   }
 
   fetchRecipe() {
-    fetch('/api/recipes')
-    .then(response => response.json())
+    axios.get('/api/recipes')
+    .then(response => response.data)
     .then(recipes => {
       this.setState({ recipes })
     })
@@ -37,7 +39,10 @@ class RecipeList extends React.Component {
   render() {
     const { recipes } = this.state;
     return recipes ? (
-      recipes.map(recipe => this.renderRecipe(recipe))
+      <div>
+        <Link to='/recipes/add'><RaisedButton>add recipe</RaisedButton></Link>
+        { recipes.map(recipe => this.renderRecipe(recipe)) }
+      </div>
     ) : <div>loading...</div>;
   }
 }

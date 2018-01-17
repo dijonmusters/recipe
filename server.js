@@ -11,6 +11,7 @@ const app = express();
 const dev = app.get('env') !== 'production';
 const port = process.env.PORT || 5000;
 
+mongoose.Promise = global.Promise;
 mongoose.connect(Config.mongoUrl, { useMongoClient: true });
 
 if (dev) {
@@ -29,7 +30,7 @@ app.use(bodyParser.json());
 app.get('/api/recipes', (req, res) => {
   Recipe.find({}, (err, recipes) => {
     if (err) throw err;
-    res.send(recipes);
+    res.status(200).send(recipes);
   });
 });
 
@@ -37,16 +38,23 @@ app.get('/api/recipes/:id', (req, res) => {
   const { id } = req.params;
   Recipe.findOne({ "_id": id }, (err, recipe) => {
     if (err) throw err;
-    res.send(recipe);
+    res.status(200).send(recipe);
   });
 });
 
 app.get('/api/users', (req, res) => {
   User.find({}, (err, users) => {
     if (err) throw err;
-    res.send(users);
+    res.status(200).send(users);
   });
 });
+
+app.post('/api/addrecipe', (req, res) => {
+  const recipe = req.body;
+  Recipe.insertMany(recipe, (err, response) => {
+    err ? res.status(400).send(err) : res.status(200).send(response)
+  });
+}); 
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
