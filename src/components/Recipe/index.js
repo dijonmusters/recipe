@@ -55,7 +55,11 @@ class Recipe extends React.Component {
     return (
       <div key={_.uniqueId()}>
         <h1>{ recipe.name }</h1>
-        <p>prep: { recipe.prep } + cook: { recipe.cook } = {recipe.prep + recipe.cook} minutes</p>
+        <p>
+          { recipe.prep + recipe.cook } minutes
+          <br />
+          (p{ recipe.prep }:c{ recipe.cook })
+        </p>
         <div className="split">
           <h2>Ingredients</h2>
           { recipe.ingredients.map(ingredient => this.renderIngredient(ingredient)) }
