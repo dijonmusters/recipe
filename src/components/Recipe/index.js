@@ -11,6 +11,7 @@ class Recipe extends React.Component {
     this.state = {
       recipes: null
     };
+    this.handleStrikeout = this.handleStrikeout.bind(this);
   }
 
   componentDidMount() {
@@ -27,10 +28,16 @@ class Recipe extends React.Component {
     .catch(error => console.log(error));
   }
 
+  handleStrikeout(e) {
+    e.target.className === 'strike'
+      ? e.target.className = ''
+      : e.target.className = 'strike'
+  }
+
   renderIngredient(ingredient) {
     return (
       <p key={_.uniqueId()}>
-        { ingredient }
+        <span onClick={ this.handleStrikeout }>{ ingredient }</span>
       </p>
     );
   }
@@ -39,7 +46,7 @@ class Recipe extends React.Component {
     return (
       <p key={ i }>
         <span className='lighter-label'>step { converter.toWords(i + 1) }</span>
-        { instruction }
+        <span onClick={ this.handleStrikeout }>{ instruction }</span>
       </p>
     );
   }
