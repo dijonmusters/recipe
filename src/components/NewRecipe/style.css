@@ -1,3 +1,13 @@
 .full-width {
   display: block;
 }
+
+.dropzone {
+  border: dashed 3px;
+  cursor: pointer;
+}
+
+.dropzone > p {
+  margin: 2.5em 0;
+  font-size: 1.5em;
+}

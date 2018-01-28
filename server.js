@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser')
 const path = require('path');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
+const multer = require('multer');
 const http = require("http");
 const Config = require('./config');
 const User = require('./models/user');
@@ -14,6 +16,14 @@ const port = process.env.PORT || 5000;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(Config.mongoUrl, { useMongoClient: true });
+
+cloudinary.config({
+  cloud_name: Config.cloudinaryName,
+  api_key: Config.cloudinaryApiKey,
+  api_secret: Config.cloudinaryApiSecret
+});
+
+const upload = multer({ dest: 'uploads/' });
 
 setInterval(function() {
   http.get('https://jon-me-for-dinner.herokuapp.com');
@@ -26,7 +36,6 @@ if (dev) {
   app.use(compression());
   app.use(morgan('common'));
   app.use(express.static(path.resolve(__dirname, 'build')));
-  
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,7 +68,14 @@ app.post('/api/addrecipe', (req, res) => {
   Recipe.insertMany(recipe, (err, response) => {
     err ? res.status(400).send(err) : res.status(200).send(response)
   });
-}); 
+});
+
+app.post('/api/upload-img', upload.single('file'), (req, res) => {
+  const file = req.file.path;
+  cloudinary.uploader.upload(file, (response) => {
+    res.status(200).send({url: response.url});
+  });
+})
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));

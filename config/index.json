@@ -1,3 +1,7 @@
 {
-  "mongoUrl": "mongodb://heroku_lvj3lcmm:q5fum6q704lt1r2vak76eg5veq@ds131492.mlab.com:31492/heroku_lvj3lcmm"
+  "mongoUrl": "mongodb://heroku_lvj3lcmm:q5fum6q704lt1r2vak76eg5veq@ds131492.mlab.com:31492/heroku_lvj3lcmm",
+  "cloudinaryName": "hxbo9g8a7",
+  "cloudinaryApiKey": "163229599139414",
+  "cloudinaryApiSecret": "ieU7MITqrB9hEfy5VyY0aCyKkqU",
+  "cloudinaryEnv": "cloudinary://163229599139414:ieU7MITqrB9hEfy5VyY0aCyKkqU@hxbo9g8a7/"
 }

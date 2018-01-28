@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField, RaisedButton, Snackbar } from 'material-ui';
 import axios from 'axios';
+import Dropzone from 'react-dropzone';
 import './style.css';
 import Ingredients from './ingredients';
 import Instructions from './instructions';
@@ -14,16 +15,19 @@ class NewRecipe extends React.Component {
         name: '',
         prep: '',
         cook: '',
+        imgUrl: '',
         ingredients: [ '' ],
         instructions: [ '' ],
       },
       userMessage: '',
       userMessageShow: false,
+      dropzoneMessage: 'drop an image or click to select file'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNewIngredient = this.handleNewIngredient.bind(this);
     this.handleNewInstruction = this.handleNewInstruction.bind(this);
     this.handleUserMessageClose = this.handleUserMessageClose.bind(this);
+    this.onImageDrop = this.onImageDrop.bind(this);
   }
 
   handleChange(field, e) {
@@ -72,14 +76,43 @@ class NewRecipe extends React.Component {
   }
 
   handleUserMessageClose() {
-    this.setState({ userMessageShow: false });
+    this.setState({
+      userMessage: '',
+      userMessageShow: false
+    });
+  }
+
+  onImageDrop(files) {
+    const file = files[0];
+    const formData = new FormData();
+    formData.append('file', file)
+    this.setState({ dropzoneMessage: 'uploading...' })
+    axios.post('/api/upload-img', formData)
+    .then(response => {
+      this.setState({
+        recipe: {
+          ...this.state.recipe,
+          imgUrl: response.data.url
+        },
+        dropzoneMessage: 'complete'
+      });
+    })
+    .catch(error => console.log(error));
   }
 
   render() {
-    const { recipe, userMessage, userMessageShow } = this.state;
+    const { recipe, userMessage, userMessageShow, dropzoneMessage } = this.state;
     return (
       <div>
         <h1>add recipe</h1>
+        <Dropzone
+          className='dropzone'
+          multiple={ false }
+          accept='image/*'
+          onDrop={ this.onImageDrop }
+        >
+          <p>{ dropzoneMessage }</p>
+        </Dropzone>
         <div className='full-width'>
           <TextField
             hintText="name"
