@@ -55,17 +55,15 @@ class Recipe extends React.Component {
     return (
       <div key={_.uniqueId()}>
         <h1>{ recipe.name }</h1>
-        <p>
-          { recipe.prep + recipe.cook } minutes
-          <br />
-          (p{ recipe.prep }:c{ recipe.cook })
-        </p>
-        <div className="split">
+        <i className='lighter-label'>{ recipe.prep + recipe.cook } mins</i>
+        <div>
           <h2>Ingredients</h2>
+          <i className='lighter-label'>prep: { recipe.prep } mins</i>
           { recipe.ingredients.map(ingredient => this.renderIngredient(ingredient)) }
         </div>
-        <div className="split">
+        <div>
           <h2>Instructions</h2>
+          <i className='lighter-label'>cook: { recipe.cook } mins</i>
           { recipe.instructions.map((instruction, i) => this.renderInstruction(instruction, i)) }
         </div>
       </div>
