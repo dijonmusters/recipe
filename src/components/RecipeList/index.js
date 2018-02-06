@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { RaisedButton } from 'material-ui';
+import RecipeGrid from './RecipeGrid';
 import _ from 'lodash';
 import './style.css';
 
@@ -10,8 +11,10 @@ class RecipeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipes: null
+      recipes: null,
+      filteredRecipes: null
     };
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   componentDidMount() {
@@ -22,9 +25,15 @@ class RecipeList extends React.Component {
     axios.get('/api/recipes')
     .then(response => response.data)
     .then(recipes => {
-      this.setState({ recipes })
+      this.setState({ recipes, filteredRecipes: recipes })
     })
     .catch(error => console.log(error));
+  }
+
+  handleFilter(e) {
+    const { recipes } = this.state;
+    const filteredRecipes = recipes.filter(recipe => recipe.name.includes(e.target.value));
+    this.setState({ filteredRecipes });
   }
 
   renderRecipe(recipe) {
@@ -37,11 +46,14 @@ class RecipeList extends React.Component {
   }
 
   render() {
-    const { recipes } = this.state;
+    const { recipes, filteredRecipes } = this.state;
     return recipes ? (
       <div>
         <Link to='/recipes/add'><RaisedButton>add recipe</RaisedButton></Link>
-        { recipes.map(recipe => this.renderRecipe(recipe)) }
+        <br />
+        <input type='text' className='search-box' placeholder='search for recipe, ingredient or tag' onChange={ this.handleFilter } />
+        <RecipeGrid recipes={ filteredRecipes } />
+        {/* { filteredRecipes.map(recipe => this.renderRecipe(recipe)) } */}
       </div>
     ) : <div>loading...</div>;
   }

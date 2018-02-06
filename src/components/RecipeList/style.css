@@ -1,0 +1,27 @@
+.search-box {
+  padding-left: 10px;
+  line-height: 2;
+  height: auto;
+  width: 500px;
+  border:1px solid #eaeaea;
+  margin: 20px 0;
+  font-size: large;
+  text-align: center;
+}
+
+.recipe-img {
+  width: 100%;
+  height: auto;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  justify-content: center;
+}
+
+.recipe-grid > div {
+  width: 400px;
+  height: 400px;
+}
